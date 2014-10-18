@@ -64,6 +64,11 @@ angular.module('Eggly', [])
             $scope.isEditing = false;
         }
 
+        $scope.deleteBookmark = function(bookmark){
+            _.remove($scope.bookmarks, function(b){
+                return b.id == bookmark.id;
+            })
+        }
 
         $scope.isCreating = false;
         $scope.isEditing = false;
