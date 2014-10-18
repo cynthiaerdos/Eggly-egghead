@@ -19,7 +19,6 @@ angular.module('Eggly', [])
             {"id": 7, "title": "Wimp", "url": "http://wimp.com", "category": "Humor" },
             {"id": 8, "title": "Dump", "url": "http://dump.com", "category": "Humor" }
         ];
-
         $scope.selectedCategory = null;
 
         $scope.addSelectedCategory = function(category){
@@ -46,6 +45,26 @@ angular.module('Eggly', [])
             resetCreateForm();
         }
 
+        $scope.editedBookmark = null;
+
+        $scope.setEditedBookmark = function(bookmark){
+            $scope.editedBookmark = angular.copy(bookmark);
+        };
+
+        $scope.isSelectedBookmark = function(selectedId){
+            return $scope.editedBookmark !== null && $scope.editedBookmark.id === selectedId;
+        }
+
+        $scope.updateBookmark = function(bookmark){
+            var index = _.findIndex($scope.bookmarks, function(b){
+                return b.id == bookmark.id;
+            });
+            $scope.bookmarks[index] = bookmark;
+            $scope.editedBookmark = null;
+            $scope.isEditing = false;
+        }
+
+
         $scope.isCreating = false;
         $scope.isEditing = false;
 
@@ -66,6 +85,7 @@ angular.module('Eggly', [])
 
         $scope.cancelEditing = function(){
             $scope.isEditing = false;
+            $scope.editedBookmark = null;
         }
 
         $scope.shouldShowCreating = function(){
