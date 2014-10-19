@@ -1,6 +1,6 @@
 angular.module('Eggly', [])
 
-.controller('MainCtrl', function($scope){
+    .controller('MainCtrl', function($scope){
         $scope.categories = [
             {"id": 0, "name": "Development"},
             {"id": 1, "name": "Design"},
@@ -25,25 +25,25 @@ angular.module('Eggly', [])
             $scope.selectedCategory = category;
             $scope.cancelCreating();
             $scope.cancelEditing();
-        }
+        };
 
         $scope.isSelectedCategory = function(category){
             return $scope.selectedCategory !== null && category.name === $scope.selectedCategory.name;
-        }
+        };
 
         function resetCreateForm(){
             $scope.newBookmark= {
                 title:'',
                 url:'',
                 category: $scope.selectedCategory
-            }
+            };
         }
 
         $scope.createBookmark = function(bookmark){
             bookmark.id = $scope.bookmarks.length;
             $scope.bookmarks.push(bookmark);
             resetCreateForm();
-        }
+        };
 
         $scope.editedBookmark = null;
 
@@ -53,22 +53,26 @@ angular.module('Eggly', [])
 
         $scope.isSelectedBookmark = function(selectedId){
             return $scope.editedBookmark !== null && $scope.editedBookmark.id === selectedId;
-        }
+        };
 
         $scope.updateBookmark = function(bookmark){
             var index = _.findIndex($scope.bookmarks, function(b){
-                return b.id == bookmark.id;
+                return b.id === bookmark.id;
             });
             $scope.bookmarks[index] = bookmark;
             $scope.editedBookmark = null;
             $scope.isEditing = false;
-        }
+        };
 
         $scope.deleteBookmark = function(bookmark){
-            _.remove($scope.bookmarks, function(b){
-                return b.id == bookmark.id;
-            })
-        }
+            var confirmDeletetion = confirm("Do you want to delete " + bookmark.title + "?");
+            if (confirmDeletetion){
+                _.remove($scope.bookmarks, function(b){
+                    return b.id === bookmark.id;
+                });
+                $scope.isEditing = false;
+            }
+        };
 
         $scope.isCreating = false;
         $scope.isEditing = false;
@@ -77,27 +81,27 @@ angular.module('Eggly', [])
             $scope.isCreating = true;
             $scope.isEditing = false;
             resetCreateForm();
-        }
+        };
 
         $scope.cancelCreating = function(){
             $scope.isCreating = false;
-        }
+        };
 
         $scope.startEditing = function() {
             $scope.isCreating = false;
             $scope.isEditing = true;
-        }
+        };
 
         $scope.cancelEditing = function(){
             $scope.isEditing = false;
             $scope.editedBookmark = null;
-        }
+        };
 
         $scope.shouldShowCreating = function(){
             return $scope.selectedCategory && !$scope.isEditing;
-        }
+        };
 
         $scope.shouldShowEditing = function(){
             return $scope.isEditing && !$scope.isCreating;
-        }
+        };
     });
